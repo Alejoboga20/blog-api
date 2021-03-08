@@ -30,14 +30,7 @@ RSpec.describe Article, type: :model do
       expect(article).not_to be_valid
       expect(article.errors[:slug]).to include("can't be blank")
     end
-
-    it 'title should be unique' do
-      valid_article = create(:article)
-      expect(valid_article).to be_valid
-
-      invalid_article = build(:article, title: "Sample Article")
-      expect(invalid_article).not_to be_valid
-    end  
+ 
   end
 
   describe '.recent' do
