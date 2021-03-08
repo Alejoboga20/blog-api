@@ -29,7 +29,7 @@ RSpec.describe Article, type: :model do
       article.slug = ''
       expect(article).not_to be_valid
       expect(article.errors[:slug]).to include("can't be blank")
-  end
+    end
 
     it 'title should be unique' do
       valid_article = create(:article)
@@ -37,6 +37,17 @@ RSpec.describe Article, type: :model do
 
       invalid_article = build(:article, title: "Sample Article")
       expect(invalid_article).not_to be_valid
+    end  
+  end
+
+  describe '.recent' do
+    it 'return articles in the correct order' do
+      recent_article = create(:article)
+			older_article = create(:article, title: 'Older', created_at: 1.hour.ago)
+      expect(described_class.recent).to eq([recent_article, older_article])
+
+      recent_article.update_column(:created_at, 2.hours.ago)
+      expect(described_class.recent).to eq([older_article, recent_article])
     end
   end
 end
